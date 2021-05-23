@@ -1,0 +1,11 @@
+{
+   "name": "mongodb",
+   "type": "mongodb",
+   "host": "localhost",
+   "port": 27017,
+   "database": "restaurante",
+   "useUnifiedTopology": true,
+   "entities": [
+      "./src/modules/**/infra/typeorm/schemas/*.ts"
+   ]
+}
