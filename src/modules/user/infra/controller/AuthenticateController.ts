@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import AppError from '../../../../infra/errors/AppError';
 import { container } from 'tsyringe';
 import AuthenticateUserService from '../../services/AuthenticateUserService';
 
@@ -17,6 +18,10 @@ class AuthenticateController {
         const user = await authenticateUserService.execute({
             email, password
         });
+
+        if(!user){
+            throw new AppError('Login Error')
+        }
 
         return response.status(201).json(user);
     }

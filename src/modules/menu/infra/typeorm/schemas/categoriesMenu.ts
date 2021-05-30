@@ -13,6 +13,9 @@ class categoriesMenu {
     id: ObjectID;
 
     @Column()
+    idUser: string;
+
+    @Column()
     name: string;
 
     @CreateDateColumn()

@@ -1,11 +1,9 @@
 import { inject, injectable } from 'tsyringe';
 
-import ICategoriesMenu from '../dtos/ICategoriesMenu';
-import categoriesMenu from '../infra/typeorm/schemas/categoriesMenu';
 import ICategoriesMenuRepository from '../repositories/ICategoriesMenuRepository';
 
 @injectable()
-class CreateCategoryMenuService {
+class DeleteCategoryMenuByUserService {
     private categoriesMenuRepository: ICategoriesMenuRepository;
 
     constructor(
@@ -15,13 +13,9 @@ class CreateCategoryMenuService {
         this.categoriesMenuRepository = categoriesMenuRepository;
     }
 
-    public async execute({
-        id,
-        name,
-    }: ICategoriesMenu): Promise<categoriesMenu | string> {
-        const categorie = await this.categoriesMenuRepository.create({ id, name });
-        return categorie;
+    public async execute(idUser: string): Promise<void> {
+        await this.categoriesMenuRepository.deleteForIdUser(idUser);
     }
 }
 
-export default CreateCategoryMenuService;
+export default DeleteCategoryMenuByUserService;

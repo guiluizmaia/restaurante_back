@@ -1,4 +1,5 @@
 interface ICategoriesMenu {
+    id: string;
     name: string;
 }
 

@@ -9,7 +9,7 @@ interface IPayload {
 
 export async function ensureAuthenticated(request: Request, response: Response, next: NextFunction) {
     const authHeader = request.headers.authorization;
-
+    console.log(authHeader)
     if (!authHeader) {
         throw new AppError('Token missing');
     }
@@ -24,6 +24,10 @@ export async function ensureAuthenticated(request: Request, response: Response, 
 
         if (!user) {
             throw new AppError('Invalid token');
+        }
+
+        request.user = {
+            id: user_id
         }
 
         next();

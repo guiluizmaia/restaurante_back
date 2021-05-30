@@ -2,6 +2,12 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateUserService from '../../services/CreateUserService';
 import UpdateUserService from '../../services/UpdateUserService';
+import DeleteUserService from '../../services/DeleteUserService';
+import DeleteMenuByUserService from '../../../menu/services/DeleteMenuByUserService';
+import DeleteCategoryMenuByUserService from '../../../menu/services/DeleteCategoryMenuByUserService';
+
+
+
 
 
 class UserController {
@@ -37,6 +43,33 @@ class UserController {
         });
 
         return response.status(201).json(user);
+    }
+
+    public async delete(
+        request: Request,
+        response: Response,
+    ): Promise<Response> {
+        const { id } = request.params;
+
+        const deleteUserService = container.resolve(
+            DeleteUserService,
+        );
+
+        const deleteMenuByUserService = container.resolve(
+            DeleteMenuByUserService,
+        );
+
+        const deleteCategoryMenuByUserService = container.resolve(
+            DeleteCategoryMenuByUserService,
+        );
+
+        await deleteMenuByUserService.execute(id);
+
+        await deleteCategoryMenuByUserService.execute(id);
+
+        await deleteUserService.execute(id);
+
+        return response.status(201).json();
     }
 }
 

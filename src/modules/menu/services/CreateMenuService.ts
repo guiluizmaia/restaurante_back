@@ -18,6 +18,7 @@ class CreateMenuService {
     public async execute({
         categoryName,
         categoryId,
+        idUser,
         name,
         description,
         price,
@@ -25,6 +26,7 @@ class CreateMenuService {
         const menu = await this.menuRepository.create({
             categoryName,
             categoryId,
+            idUser,
             name,
             description,
             price,

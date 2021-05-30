@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import FindByIdCategoryMenuService from '../../services/FindByIdCategoryMenuService';
+import IndexCategoryMenuService from '../../services/IndexCategoryMenuService';
+
 import CreateMenuService from '../../services/CreateMenuService';
 import DeleteMenuService from '../../services/DeleteMenuService';
 import IndexMenuService from '../../services/IndexMenuService';
 import UpdateMenuService from '../../services/UpdateMenuService';
+
 import AppError from '../../../../infra/errors/AppError';
 
 class MenuController {
@@ -12,6 +15,7 @@ class MenuController {
         request: Request,
         response: Response,
     ): Promise<Response> {
+        const { id } = request.user;
         const { categoryId, name, description, price } = request.body;
 
         const findByIdCategoryMenuService = container.resolve(
@@ -26,7 +30,12 @@ class MenuController {
             throw new AppError("Category not found");
         }
 
+        if (categorie.idUser !== id) {
+            throw new AppError("Category error");
+        }
+
         const menu = await createMenuService.execute({
+            idUser: categorie.idUser,
             categoryName: categorie.name,
             categoryId,
             name,
@@ -48,6 +57,7 @@ class MenuController {
         );
 
 
+
         const menu = await updateMenuService.execute({ id, categoryId, name, description, price });
 
         return response.status(201).json(menu);
@@ -57,13 +67,17 @@ class MenuController {
         request: Request,
         response: Response,
     ): Promise<Response> {
+        const {id} = request.user;
         const indexMenuService = container.resolve(
             IndexMenuService,
         );
 
-        const menu = await indexMenuService.execute();
+        const indexCategoryMenuService = container.resolve(IndexCategoryMenuService);
 
-        return response.status(201).json(menu);
+        const category = await indexCategoryMenuService.execute(id);
+        const menu = await indexMenuService.execute(id);
+
+        return response.status(201).json({category, menu});
     }
 
     public async delete(

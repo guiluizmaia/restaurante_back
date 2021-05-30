@@ -11,6 +11,7 @@ class CategoryMenuController {
         request: Request,
         response: Response,
     ): Promise<Response> {
+        const { id } = request.user;
         const { name } = request.body;
 
         const createCategoryMenuService = container.resolve(
@@ -18,6 +19,7 @@ class CategoryMenuController {
         );
 
         const categorie = await createCategoryMenuService.execute({
+            id,
             name,
         });
 
@@ -67,11 +69,12 @@ class CategoryMenuController {
         request: Request,
         response: Response,
     ): Promise<Response> {
+        const {id} = request.user;
         const indexCategoryMenuService = container.resolve(
             IndexCategoryMenuService,
         );
 
-        const index = await indexCategoryMenuService.execute();
+        const index = await indexCategoryMenuService.execute(id);
 
         return response.status(201).json(index);
     }

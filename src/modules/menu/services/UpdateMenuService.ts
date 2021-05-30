@@ -4,6 +4,8 @@ import { inject, injectable } from 'tsyringe';
 import IMenu from '../dtos/IMenu';
 import menu from '../infra/typeorm/schemas/menu';
 import IMenuRepository from '../repositories/IMenuRepository';
+import ICategoriesMenuRepository from '../repositories/ICategoriesMenuRepository';
+
 
 interface IRequest extends IMenu {
     id: string;
@@ -12,17 +14,21 @@ interface IRequest extends IMenu {
 @injectable()
 class UpdateMenuService {
     private menuRepository: IMenuRepository;
+    private categoriesMenuRepository: ICategoriesMenuRepository;
+
 
     constructor(
         @inject('MenuRepository')
         menuRepository: IMenuRepository,
+        @inject('CategoriesMenuRepository')
+        categoriesMenuRepository: ICategoriesMenuRepository,
     ) {
         this.menuRepository = menuRepository;
+        this.categoriesMenuRepository = categoriesMenuRepository;
     }
 
     public async execute({
         id,
-        categoryName,
         categoryId,
         name,
         description,
@@ -34,7 +40,6 @@ class UpdateMenuService {
             throw new AppError("Item not found")
         }
 
-        menu.categoryName = categoryName;
         menu.name = name;
         menu.description = description;
         menu.price = price;

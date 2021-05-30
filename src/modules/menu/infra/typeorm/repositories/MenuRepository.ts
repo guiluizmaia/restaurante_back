@@ -13,6 +13,7 @@ class MenuRepository implements IMenuRepository {
     }
 
     public async create({
+        idUser,
         categoryName,
         categoryId,
         name,
@@ -20,6 +21,7 @@ class MenuRepository implements IMenuRepository {
         price,
     }: IMenu): Promise<menu> {
         const menu = await this.ormRepository.create({
+            idUser,
             categoryName,
             categoryId,
             name,
@@ -41,13 +43,20 @@ class MenuRepository implements IMenuRepository {
         await this.ormRepository.deleteMany({ categoryId });
     }
 
+    public async deleteForIdUser(id: string): Promise<void> {
+        await this.ormRepository.deleteMany({ idUser: id });
+    }
+
     public async findByid(id: string): Promise<menu | undefined> {
         const categorie = await this.ormRepository.findOne(id);
         return categorie;
     }
 
-    public async index(): Promise<menu[] | undefined> {
+    public async index(id: string): Promise<menu[] | undefined> {
         const categories = await this.ormRepository.find({
+            where: {
+                idUser: id
+            },
             order: {
                 categoryName: 'ASC'
             }

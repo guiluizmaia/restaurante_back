@@ -19,6 +19,9 @@ class menu {
     categoryName: string;
 
     @Column()
+    idUser: string;
+
+    @Column()
     name: string;
 
     @Column()

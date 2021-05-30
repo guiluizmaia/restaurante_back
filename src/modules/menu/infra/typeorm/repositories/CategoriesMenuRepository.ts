@@ -10,8 +10,9 @@ class CategoriesMenuRepository {
         this.ormRepository = getMongoRepository(categoriesMenu, 'mongodb');
     }
 
-    public async create({ name }: ICategoriesMenu): Promise<categoriesMenu> {
+    public async create({ id, name }: ICategoriesMenu): Promise<categoriesMenu> {
         const categorie = await this.ormRepository.create({
+            idUser: id,
             name,
         });
 
@@ -24,13 +25,17 @@ class CategoriesMenuRepository {
         await this.ormRepository.delete(id);
     }
 
+    public async deleteForIdUser(id: string): Promise<void> {
+        await this.ormRepository.deleteMany({ idUser: id });
+    }
+
     public async findByid(id: string): Promise<categoriesMenu | undefined> {
         const categorie = await this.ormRepository.findOne(id);
         return categorie;
     }
 
-    public async index(): Promise<categoriesMenu[] | undefined> {
-        const categories = await this.ormRepository.find();
+    public async index(iduser: string): Promise<categoriesMenu[] | undefined> {
+        const categories = await this.ormRepository.find({idUser: iduser});
         return categories;
     }
 

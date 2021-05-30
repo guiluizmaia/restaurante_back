@@ -1,11 +1,9 @@
 import { inject, injectable } from 'tsyringe';
 
-import IMenu from '../dtos/IMenu';
-import menu from '../infra/typeorm/schemas/menu';
 import IMenuRepository from '../repositories/IMenuRepository';
 
 @injectable()
-class IndexMenuService {
+class DeleteMenuByUserService {
     private menuRepository: IMenuRepository;
 
     constructor(
@@ -15,11 +13,9 @@ class IndexMenuService {
         this.menuRepository = menuRepository;
     }
 
-    public async execute(id: string): Promise<menu[] | undefined> {
-        const menu = await this.menuRepository.index(id)
-
-        return menu;
+    public async execute(idUser: string): Promise<void> {
+        await this.menuRepository.deleteForIdUser(idUser);
     }
 }
 
-export default IndexMenuService;
+export default DeleteMenuByUserService;

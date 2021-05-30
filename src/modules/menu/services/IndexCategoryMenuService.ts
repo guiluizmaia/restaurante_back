@@ -14,8 +14,8 @@ class IndexCategoryMenuService {
         this.categoriesMenuRepository = categoriesMenuRepository;
     }
 
-    public async execute(): Promise<categoriesMenu[] | undefined> {
-        const categories = await this.categoriesMenuRepository.index();
+    public async execute(id: string): Promise<categoriesMenu[] | undefined> {
+        const categories = await this.categoriesMenuRepository.index(id);
 
         return categories;
     }

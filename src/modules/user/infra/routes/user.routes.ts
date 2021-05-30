@@ -10,9 +10,10 @@ const authenticateController = new AuthenticateController();
 const userRoute = Router();
 
 userRoute.get('/login/:email/:password', authenticateController.login);
-userRoute.use(ensureAuthenticated);
 userRoute.post('/', userController.create);
+userRoute.use(ensureAuthenticated);
 userRoute.patch('/', userController.update);
+userRoute.delete('/:id', userController.delete);
 
 
 
