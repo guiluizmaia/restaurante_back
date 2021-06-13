@@ -9,6 +9,9 @@ import MenuRepository from '../../modules/menu/infra/typeorm/repositories/MenuRe
 import IUserRepository from '../../modules/user/repositories/IUserRepository';
 import UserRepository from '../../modules/user/infra/typeorm/repositories/UserRepository';
 
+import IOrderRepository from '../../modules/order/repositories/IOrderRepository';
+import OrderRepository from '../../modules/order/infra/typeorm/repositories/OrderRepository';
+
 
 container.registerSingleton<ICategoriesMenuRepository>(
   'CategoriesMenuRepository',
@@ -18,4 +21,7 @@ container.registerSingleton<ICategoriesMenuRepository>(
 container.registerSingleton<IMenuRepository>('MenuRepository', MenuRepository);
 
 container.registerSingleton<IUserRepository>('UserRepository', UserRepository);
+
+container.registerSingleton<IOrderRepository>('OrderRepository', OrderRepository);
+
 

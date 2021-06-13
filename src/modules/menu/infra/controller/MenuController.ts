@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import multiparty from 'multiparty';
 import FindByIdCategoryMenuService from '../../services/FindByIdCategoryMenuService';
 import IndexCategoryMenuService from '../../services/IndexCategoryMenuService';
 
@@ -56,8 +57,6 @@ class MenuController {
             UpdateMenuService,
         );
 
-
-
         const menu = await updateMenuService.execute({ id, categoryId, name, description, price });
 
         return response.status(201).json(menu);
@@ -94,6 +93,8 @@ class MenuController {
 
         return response.status(201).json(menu);
     }
+
+
 }
 
 export default MenuController;

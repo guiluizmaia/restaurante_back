@@ -7,7 +7,10 @@ const menuController = new MenuController();
 const menuRoute = Router();
 
 menuRoute.use(ensureAuthenticated);
+
 menuRoute.post('/', menuController.create);
+
+
 menuRoute.get('/', menuController.index);
 menuRoute.patch('/', menuController.update);
 menuRoute.delete('/:id', menuController.delete);
