@@ -28,6 +28,7 @@ class OrderRepository implements IOrderRepository  {
             itens,
             price,
             adress,
+            status: 'new_order'
         });
 
         await this.ormRepository.save(order);

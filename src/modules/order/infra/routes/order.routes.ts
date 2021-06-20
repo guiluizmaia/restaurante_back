@@ -9,7 +9,7 @@ const orderRoute = Router();
 
 orderRoute.use(ensureAuthenticated);
 orderRoute.post('/', orderController.create);
-
-
+orderRoute.get('/', orderController.index);
+orderRoute.patch('/', orderController.index);
 
 export default orderRoute;

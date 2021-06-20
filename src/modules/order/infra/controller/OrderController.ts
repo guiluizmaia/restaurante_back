@@ -3,9 +3,15 @@ import { container } from 'tsyringe';
 
 import CreateOrderService from '../../services/CreateOrderService';
 
+import ListOrderService from '../../services/ListOrderService';
+
+import UpdateStatusOrderService from '../../services/UpdateStatusOrderService';
+
 import FindUserByIdService from '../../../user/services/FindUserByIdService';
 
 import FindMenuByIdService from '../../../menu/services/FindMenuByIdService';
+
+
 
 
 
@@ -50,6 +56,56 @@ class OrderController {
         )
 
         const order = await createOrderService.execute({ idClient, idUser: id, description, itens, price: p, adress, });
+
+        return response.status(201).json(order);
+    }
+
+    public async index(
+        request: Request,
+        response: Response,
+    ): Promise<Response> {
+        const { id } = request.user;
+
+        const findUserByIdService = container.resolve(
+            FindUserByIdService,
+        );
+
+
+        const listOrderService = container.resolve(ListOrderService);
+
+        const user = await findUserByIdService.execute(id);
+
+        if (!user) {
+            throw new AppError("User not found");
+        }
+
+        const order = await listOrderService.execute(id);
+
+        return response.status(201).json(order);
+    }
+
+    public async updateStatus(
+        request: Request,
+        response: Response,
+    ): Promise<Response> {
+        const { id } = request.user;
+        const { idOrder, status } = request.body;
+
+
+        const findUserByIdService = container.resolve(
+            FindUserByIdService,
+        );
+
+
+        const updateStatusOrderService = container.resolve(UpdateStatusOrderService);
+
+        const user = await findUserByIdService.execute(id);
+
+        if (!user) {
+            throw new AppError("User not found");
+        }
+
+        const order = await updateStatusOrderService.execute(idOrder, status);
 
         return response.status(201).json(order);
     }
